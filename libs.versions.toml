@@ -3,6 +3,7 @@ kotlin = "2.1.10"
 coroutines = "1.10.1"
 forge = "10.13.4.1614"
 shadow = "8.1.1"
+forgelin = "2.0.3"
 
 [libraries]
 gradle-retro = { module = "com.gtnewhorizons:retrofuturagradle", version = "1.4.2" }
@@ -18,6 +19,8 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 kotlin-annotations = { module = "org.jetbrains:annotations", version= "24.0.1" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlin-coroutines-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "coroutines" }
+
+impact-forgelin = { module = "space.impact:Forgelin", version.ref = "forgelin" }
 
 [plugins]
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
