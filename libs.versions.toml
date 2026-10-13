@@ -2,17 +2,38 @@
 kotlin = "2.3.21"
 coroutines = "1.11.0"
 forge = "10.13.4.1614"
-shadow = "8.1.1"
+shadow = "9.6.1"
 forgelin = "2.0.3"
 packetNewtwork = "1.1.7"
+retro = "2.0.6"
+gitversion = "4.3.0"
+buildconfig = "6.1.0"
+conventions = "1.0.0"
+# Matches the embedded Kotlin runtime of Gradle 9.7.1.
+build-logic-kotlin = "2.4.0"
+junit = "4.13.2"
+unimixins = "0.3.1"
+mixin-asm = "5.0.4"
+mixin-guava = "24.1.1-jre"
+mixin-gson = "2.13.2"
+fernflower = "1.2.1.16"
+ic2-runtime = "2353971"
 
 [libraries]
-gradle-retro = { module = "com.gtnewhorizons:retrofuturagradle", version = "1.4.2" }
-gradle-forge = { module = "com.anatawa12.forge:ForgeGradle", version = "1.2-1.1.+" }
+gradle-retro = { module = "com.gtnewhorizons:retrofuturagradle", version.ref = "retro" }
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradle-gitversion = { module = "com.palantir.gradle.gitversion:gradle-git-version", version = "3.0.0" }
-gradle-shadow = { module = "com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin", version.ref = "shadow" }
-gradle-buildconfig = { module = "com.github.gmazzo:gradle-buildconfig-plugin", version = "3.1.0" }
+gradle-gitversion = { module = "com.palantir.gradle.gitversion:gradle-git-version", version.ref = "gitversion" }
+gradle-shadow = { module = "com.gradleup.shadow:com.gradleup.shadow.gradle.plugin", version.ref = "shadow" }
+gradle-buildconfig = { module = "com.github.gmazzo.buildconfig:plugin", version.ref = "buildconfig" }
+build-logic-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "build-logic-kotlin" }
+build-logic-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "build-logic-kotlin" }
+test-junit = { module = "junit:junit", version.ref = "junit" }
+mixin-unimixins = { module = "io.github.legacymoddingmc:unimixins", version.ref = "unimixins" }
+mixin-asm = { module = "org.ow2.asm:asm-debug-all", version.ref = "mixin-asm" }
+mixin-guava = { module = "com.google.guava:guava", version.ref = "mixin-guava" }
+mixin-gson = { module = "com.google.code.gson:gson", version.ref = "mixin-gson" }
+mixin-fernflower = { module = "org.jetbrains:intellij-fernflower", version.ref = "fernflower" }
+minecraft-ic2-runtime = { module = "curse.maven:ic2-242638", version.ref = "ic2-runtime" }
 
 kotlin-stdlib-core = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-stdlib-java8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -25,11 +46,16 @@ impact-forgelin = { module = "space.impact:Forgelin", version.ref = "forgelin" }
 impact-packet-newtwork = { module = "space.impact:Packet-Network", version.ref = "packetNewtwork" }
 
 [plugins]
+retro = { id = "com.gtnewhorizons.retrofuturagradle", version.ref = "retro" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-minecraft-forge = { id = "forge", version.ref = "forge" }
-buildconfig = { id = "com.github.gmazzo.buildconfig", version = "3.1.0" }
-gitversion = { id = "com.palantir.git-version", version = "3.0.0" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
-setup-minecraft = { id = "minecraft-setup", version = "1.0.0" }
-setup-publish = { id = "publish-setup", version = "1.0.0" }
+buildconfig = { id = "com.github.gmazzo.buildconfig", version.ref = "buildconfig" }
+gitversion = { id = "com.palantir.git-version", version.ref = "gitversion" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
+setup-minecraft = { id = "minecraft-setup", version.ref = "conventions" }
+setup-publish = { id = "publish-setup", version.ref = "conventions" }
+setup-jvm = { id = "jvm-setup", version.ref = "conventions" }
+setup-settings = { id = "settings-setup", version.ref = "conventions" }
+
+[bundles]
+mixin-processor = ["mixin-asm", "mixin-guava", "mixin-gson"]

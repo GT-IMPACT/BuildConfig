@@ -2,6 +2,8 @@
 
 dependencyResolutionManagement {
     repositories {
+        mavenCentral()
+        gradlePluginPortal()
         maven("https://maven.accident.space/repository/maven-public/") {
             mavenContent {
                 includeGroup("space.impact")
@@ -15,10 +17,6 @@ dependencyResolutionManagement {
             }
         }
         maven("https://maven.minecraftforge.net")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
-        maven("https://jitpack.io")
-        maven("https://plugins.gradle.org/m2/")
-        mavenCentral()
         mavenLocal()
     }
 
