@@ -10,6 +10,11 @@ internal fun RepositoryHandler.repositories() {
             includeGroupByRegex("space\\.impact(\\..*)?")
             includeGroup("com.github.GTNewHorizons")
             includeGroup("com.github.Azanor")
+            includeGroup("net.industrial-craft")
+        }
+        metadataSources {
+            mavenPom()
+            artifact()
         }
         if (!System.getenv("IMPACT_MAVEN_USER").isNullOrBlank()) {
             credentials {
