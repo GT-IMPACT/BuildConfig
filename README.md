@@ -88,10 +88,14 @@ Legacy-свойства `modId`, `modName`, `modGroup`, `mavenGroupId`, `mavenPu
 и `customArchiveBaseName` продолжают работать.
 Значения в `impactMod` имеют приоритет над ними.
 
-Версия берётся из `VERSION`, затем из Git. В CI используется последний тег,
-а при его отсутствии — Git-версия. Явная `project.version` или legacy `modVersion`
+Версия берётся из `VERSION`, затем из Git одинаково локально и в CI.
+Явная `project.version` или legacy `modVersion`
 заменяет значение по умолчанию. `getVersionMod()` остаётся доступным.
 `RELEASE_VERSION`, `ARTIFACT_GROUP_ID`, `ARTIFACT_ID` переопределяют Maven-публикацию.
+При подключённом `publish-setup` локальные архивы используют те же `artifactId`
+и версию, что и Maven: `<artifactId>-<version>[-<classifier>].jar`.
+Это относится к обычным, dev, Shadow, reobf и sources JAR; `archiveName`, `modId`
+и `customArchiveBaseName` больше не задают имя публикуемых архивов.
 
 ## Несколько модулей
 
