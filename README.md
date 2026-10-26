@@ -88,7 +88,8 @@ Legacy-свойства `modId`, `modName`, `modGroup`, `mavenGroupId`, `mavenPu
 и `customArchiveBaseName` продолжают работать.
 Значения в `impactMod` имеют приоритет над ними.
 
-Версия берётся из `VERSION`, затем из Git одинаково локально и в CI.
+Версия берётся из `RELEASE_VERSION`, затем `VERSION`, затем последнего Git-тега
+одинаково локально и в CI. Без тегов используется Git-версия без суффикса `.dirty`.
 Явная `project.version` или legacy `modVersion`
 заменяет значение по умолчанию. `getVersionMod()` остаётся доступным.
 `RELEASE_VERSION`, `ARTIFACT_GROUP_ID`, `ARTIFACT_ID` переопределяют Maven-публикацию.

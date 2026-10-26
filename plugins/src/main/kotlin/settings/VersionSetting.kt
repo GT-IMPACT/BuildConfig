@@ -8,13 +8,16 @@ import org.gradle.kotlin.dsl.invoke
 
 fun Project.getVersionMod(): String {
 
-    providers.environmentVariable("VERSION").orNull?.takeIf(String::isNotBlank)?.let {
-        return it
+    for (variable in listOf("RELEASE_VERSION", "VERSION")) {
+        val override = providers.environmentVariable(variable).orNull
+        if (!override.isNullOrBlank()) {
+            return override
+        }
     }
     return runCatching {
         @Suppress("UNCHECKED_CAST")
         val versionDetails = extra["versionDetails"] as Closure<VersionDetails>
         val details = versionDetails()
-        details.version
+        details.lastTag?.takeIf(String::isNotBlank) ?: details.version.removeSuffix(".dirty")
     }.getOrDefault("unknown")
 }
