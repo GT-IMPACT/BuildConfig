@@ -1,7 +1,6 @@
 package settings
 
 import org.gradle.api.Project
-import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.bundling.AbstractArchiveTask
@@ -23,10 +22,11 @@ internal fun Project.publishSettings(
             artifactId = providers.environmentVariable("ARTIFACT_ID").getOrElse(mod.artifactId.get())
             version = providers.environmentVariable("RELEASE_VERSION").getOrElse(project.version.toString())
         }
-        extensions.getByType<BasePluginExtension>().archivesName.set(publication.map {
-            it.artifactId
-        })
-        tasks.withType<AbstractArchiveTask>().configureEach {
+        // RFG's launcher and patched Minecraft archives must keep their own names and Minecraft version.
+        val modArchiveTasks = setOf("jar", "shadowJar", "reobfJar", "sourcesJar", "javadocJar")
+        tasks.withType<AbstractArchiveTask>().matching {
+            it.name in modArchiveTasks
+        }.configureEach {
             archiveBaseName.set(publication.map {
                 it.artifactId
             })

@@ -122,6 +122,37 @@ public class ConventionPluginsTest {
         assertFalse(Files.readString(root.resolve("build/publications/maven/pom-default.xml")).contains("dev-only"));
     }
 
+    @Test public void publicationNamesLeaveRfgDevelopmentArchivesDistinct() throws Exception {
+        for (String plugins : new String[] {
+                "id 'minecraft-setup'; id 'publish-setup'",
+                "id 'publish-setup'; id 'minecraft-setup'"
+        }) {
+            Path root = fixture("rootProject.name='dev-fixture'", "plugins { " + plugins + " }\n" + """
+                    impactMod { artifactId.set('published-mod'); archiveName.set('legacy-mod') }
+                    tasks.register('toolsJar', Jar) {
+                        archiveBaseName.set('internal-tools')
+                        archiveVersion.set('42')
+                    }
+                    tasks.register('verify') {
+                        doLast {
+                            assert packageMcLauncher.archiveFileName.get() == 'mclauncher-1.7.10.jar'
+                            assert packagePatchedMc.archiveFileName.get() == 'recompiled_minecraft-1.7.10.jar'
+                            assert packageMcLauncher.archiveFile.get().asFile != packagePatchedMc.archiveFile.get().asFile
+                            assert reobfJar.recompMcJar.get().asFile == packagePatchedMc.archiveFile.get().asFile
+                            assert toolsJar.archiveFileName.get() == 'internal-tools-42.jar'
+                            assert jar.archiveFileName.get() == 'published-mod-1.2.3-dev.jar'
+                            assert shadowJar.archiveFileName.get() == 'published-mod-1.2.3-dev-shadow.jar'
+                            assert reobfJar.archiveFileName.get() == 'published-mod-1.2.3.jar'
+                            assert sourcesJar.archiveFileName.get() == 'published-mod-1.2.3-sources.jar'
+                            assert publishing.publications.maven.artifactId == 'published-mod'
+                            assert publishing.publications.maven.version == '1.2.3'
+                        }
+                    }
+                    """);
+            run(root, "verify");
+        }
+    }
+
     @Test public void mixinsRegisterRefmapBeforeRfgFinalizesConfiguration() throws Exception {
         Path root = fixture("rootProject.name='mixins'", """
                 plugins { id 'minecraft-setup' }
@@ -210,10 +241,10 @@ public class ConventionPluginsTest {
                         assert result.allComponents.any { it.id instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier && it.id.projectPath == ':api' }
                         assert !result.allDependencies.any { it instanceof org.gradle.api.artifacts.result.UnresolvedDependencyResult }
                         assert configurations.reobfJarConfiguration.incoming.artifacts.artifacts.any {
-                            it.id.componentIdentifier instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier && it.file.name == 'api_mod-1.2.3.jar'
+                            it.id.componentIdentifier instanceof org.gradle.api.artifacts.component.ProjectComponentIdentifier && it.file.name == 'api-1.2.3.jar'
                         }
                         assert configurations.reobfJarConfiguration.incoming.artifacts.artifacts.any { it.file.name == 'shared-1.2.3.jar' }
-                        assert configurations.obfuscatedRuntimeClasspath.incoming.artifacts.artifacts.any { it.file.name == 'api_mod-1.2.3.jar' }
+                        assert configurations.obfuscatedRuntimeClasspath.incoming.artifacts.artifacts.any { it.file.name == 'api-1.2.3.jar' }
                         assert configurations.obfuscatedRuntimeClasspath.incoming.artifacts.artifacts.any { it.file.name == 'shared-1.2.3.jar' }
                     }
                 }

@@ -97,6 +97,8 @@ Legacy-свойства `modId`, `modName`, `modGroup`, `mavenGroupId`, `mavenPu
 и версию, что и Maven: `<artifactId>-<version>[-<classifier>].jar`.
 Это относится к обычным, dev, Shadow, reobf и sources JAR; `archiveName`, `modId`
 и `customArchiveBaseName` больше не задают имя публикуемых архивов.
+Внутренние архивы RFG (`packageMcLauncher`, `packagePatchedMc`) сохраняют свои
+имена и версию Minecraft; настройки Maven к ним не применяются.
 
 ## Несколько модулей
 
